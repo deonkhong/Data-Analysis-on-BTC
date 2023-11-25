@@ -110,3 +110,41 @@ advanced_stats = {
 
 advanced_stats
 
+from statsmodels.tsa.stattools import adfuller, kpss
+from scipy.stats import skew, kurtosis
+
+# Autocorrelation Analysis
+btc_autocorr_lag1 = daily_returns.autocorr(lag=1)
+btc_autocorr_lag5 = daily_returns.autocorr(lag=5)
+btc_autocorr_lag10 = daily_returns.autocorr(lag=10)
+
+# Hurst Exponent
+def hurst_exponent(time_series):
+    """Returns the Hurst Exponent of the time series."""
+    lags = range(2, 100)
+    tau = [np.sqrt(np.std(np.subtract(time_series[lag:], time_series[:-lag]))) for lag in lags]
+    poly = np.polyfit(np.log(lags), np.log(tau), 1)
+    return poly[0] * 2.0
+
+hurst_exp = hurst_exponent(daily_returns.dropna())
+
+# Value at Risk (VaR) - Historical Method (95% Confidence)
+var_95 = np.percentile(daily_returns.dropna(), 5)  # Using 5% percentile since it's a left-tail measure
+
+# Skewness and Kurtosis
+skewness = skew(daily_returns.dropna())
+kurt = kurtosis(daily_returns.dropna(), fisher=True)  # Fisher's definition (normal == 0.0)
+
+# Combining the results
+advanced_stats.update({
+    "Autocorrelation (Lag 1)": btc_autocorr_lag1,
+    "Autocorrelation (Lag 5)": btc_autocorr_lag5,
+    "Autocorrelation (Lag 10)": btc_autocorr_lag10,
+    "Hurst Exponent": hurst_exp,
+    "Value at Risk (95%)": var_95,
+    "Skewness": skewness,
+    "Kurtosis": kurt
+})
+
+advanced_stats
+

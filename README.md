@@ -41,3 +41,31 @@ Volatility is measured as the standard deviation over the 30-day and 90-day peri
 The Sharpe Ratio provides a measure for calculating the return of an investment compared to its risk.
 
 - **Annualized Sharpe Ratio:** 0.86
+
+# Bitcoin Time Series Analysis
+
+## Autocorrelation Analysis
+This section examines the autocorrelation at different lags to understand the serial correlations in Bitcoin's daily returns.
+
+- **Autocorrelation (Lag 1):** -0.018
+  - Negative autocorrelation at a lag of 1 day suggests a slight tendency towards mean-reversion over very short periods.
+- **Autocorrelation (Lag 5):** 0.008
+  - Very slight positive autocorrelation at a lag of 5 days.
+- **Autocorrelation (Lag 10):** 0.038
+  - Slight positive autocorrelation at a lag of 10 days.
+  
+The results indicate weak serial correlations, with negative autocorrelation at lag 1 and slight positive autocorrelation at higher lags.
+
+## Hurst Exponent
+- **Hurst Exponent:** NaN
+  - The undefined value (NaN) typically results from numerical issues in the calculation, especially in shorter or less variable time series. The Hurst Exponent assesses the long-term memory of time series, indicating whether it's mean-reverting, trending, or random.
+
+## Value at Risk (VaR)
+- **Value at Risk (95%):** -5.76%
+  - This implies there is a 95% chance that Bitcoin will not lose more than 5.76% of its value in a single day.
+
+## Skewness and Kurtosis
+- **Skewness:** -0.14
+  - Indicates slight negative skewness in the distribution.
+- **Kurtosis:** 7.52
+  - A leptokurtic distribution, suggesting a higher probability of extreme values compared to a normal distribution.
