@@ -68,3 +68,45 @@ print("Average Weekly Gain:", average_weekly_gain, "%")
 print("Standard Deviation of Weekly Gains:", std_dev_weekly_gain, "%")
 print("Average Weekly Loss:", average_weekly_loss, "%")
 print("Standard Deviation of Weekly Losses:", std_dev_weekly_loss, "%")
+
+
+import numpy as np
+
+# Calculating Simple Moving Averages (SMA) - 30 days and 90 days
+btc_data['SMA_30'] = btc_data['Close'].rolling(window=30).mean()
+btc_data['SMA_90'] = btc_data['Close'].rolling(window=90).mean()
+
+# Calculating Exponential Moving Averages (EMA) - 30 days and 90 days
+btc_data['EMA_30'] = btc_data['Close'].ewm(span=30, adjust=False).mean()
+btc_data['EMA_90'] = btc_data['Close'].ewm(span=90, adjust=False).mean()
+
+# Volatility Analysis - 30 days and 90 days rolling standard deviation
+btc_data['Volatility_30'] = btc_data['Close'].rolling(window=30).std()
+btc_data['Volatility_90'] = btc_data['Close'].rolling(window=90).std()
+
+# Sharpe Ratio (Annualized)
+# Assuming a risk-free rate of 0 for simplicity
+risk_free_rate = 0.0
+daily_returns = btc_data['Close'].pct_change()
+sharpe_ratio_annualized = np.sqrt(252) * daily_returns.mean() / daily_returns.std()
+
+# Extracting the last values of the calculated metrics for reporting
+latest_sma_30 = btc_data['SMA_30'].iloc[-1]
+latest_sma_90 = btc_data['SMA_90'].iloc[-1]
+latest_ema_30 = btc_data['EMA_30'].iloc[-1]
+latest_ema_90 = btc_data['EMA_90'].iloc[-1]
+latest_volatility_30 = btc_data['Volatility_30'].iloc[-1]
+latest_volatility_90 = btc_data['Volatility_90'].iloc[-1]
+
+advanced_stats = {
+    "Latest 30-Day SMA": latest_sma_30,
+    "Latest 90-Day SMA": latest_sma_90,
+    "Latest 30-Day EMA": latest_ema_30,
+    "Latest 90-Day EMA": latest_ema_90,
+    "Latest 30-Day Volatility": latest_volatility_30,
+    "Latest 90-Day Volatility": latest_volatility_90,
+    "Annualized Sharpe Ratio": sharpe_ratio_annualized
+}
+
+advanced_stats
+
